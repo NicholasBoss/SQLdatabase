@@ -36,6 +36,7 @@ Python, sqlite3, and sql.connector
 
 * [Youtube](https://www.youtube.com/watch?v=3vsC05rxZ8c&list=PLzMcBGfZo4-l5kVSNVKGO60V6RkXAVtp-&index=1)
 * [Replit](https://replit.com/@NicholasBoss1/CSE310SQLDBWorkshop#main.py)
+* [SQLDocumentation](https://dev.mysql.com/doc/connector-python/en/connector-python-example-ddl.html)
 
 # Future Work
 
