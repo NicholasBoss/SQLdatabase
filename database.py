@@ -2,7 +2,7 @@ import time
 import sqlite3
 import mysql.connector
 
-
+# All functions to use for the program
 def get_rating(cursor):
         cursor.execute("SELECT ratingName FROM rating")
         ratings = cursor.fetchall()
@@ -38,14 +38,15 @@ def get_sqlid(mycursor):
     return sel
 
 data = None
+# program start. Asks user which method they want to use
 while data != 3:
     print("Which database do you want to use?")
-    print("1) SQL (Sqlite)")
+    print("1) SQL (Sqlite)") # use this option if you don't have Workbench installed.
     print("2) MySQL (Workbench)")
     print("3) Quit")
     data = int(input("Select > "))
 
-    if data == 1:
+    if data == 1: # if user chose '1' it takes them to the sqlite3 database
         db = sqlite3.connect('games.db')
         cursor = db.cursor()
         cursor.execute("CREATE TABLE IF NOT EXISTS rating ("
@@ -65,15 +66,16 @@ while data != 3:
                 ("The Legend of Zelda: Ocarina of Time", '1998-11-21',2),
                 ("Assassin's Creed Black Flag", '2013-10-19',1)]
 
-        # MySQL INSERT QUERY (Parent table)
-        # cursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (1, 'M')") # Use this for ENUM values
-        # cursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (2,'E')") # Use this for ENUM values
+        # Initial inserts for testing. 
+        #   MySQL INSERT QUERY (Parent table)
+        #   cursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (1, 'M')") # Use this for ENUM values
+        #   cursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (2,'E')") # Use this for ENUM values
 
-        # MySQL INSERT QUERY (Child Table)
-        # sqlInsertgame = "INSERT INTO game (gameTitle, gameDateReleased, ratingId) VALUES (?, ?, ?)"
-        # cursor.executemany(sqlInsertgame, mgames) # this works for multiple values in tuples
-        # print("Inserts complete")
-        # db.commit()
+        #   MySQL INSERT QUERY (Child Table)
+        #   sqlInsertgame = "INSERT INTO game (gameTitle, gameDateReleased, ratingId) VALUES (?, ?, ?)"
+        #   cursor.executemany(sqlInsertgame, mgames) # this works for multiple values in tuples
+        #   print("Inserts complete")
+        #   db.commit()
 
        
         choice = None
@@ -126,9 +128,8 @@ while data != 3:
                 print("Game deleted from database.")
                 print("\n")
                 
-    elif data == 2:
+    elif data == 2: # if user chose '2' it takes them to the Workbench database
 
-        
         connection = mysql.connector.connect(host='localhost',user='root',password='password')
         print("Connected to Workbench.")
         print("\n")
@@ -154,19 +155,20 @@ while data != 3:
                 (2,"The Legend of Zelda: Ocarina of Time", '1998-11-21',2),
                 (3,"Assassin's Creed Black Flag", '2013-10-19',1)]
 
-        # MySQL INSERT QUERY (Parent table)
-        # mycursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (1, 'M')") # Use this for ENUM values
-        # mycursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (2,'E')") # Use this for ENUM values
+        # Initial inserts for testing. 
+        #   MySQL INSERT QUERY (Parent table)
+        #   mycursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (1, 'M')") # Use this for ENUM values
+        #   mycursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (2,'E')") # Use this for ENUM values
 
-        # MySQL INSERT QUERY (Child Table)
-        # sqlInsertgame = "INSERT INTO game (gameId, gameTitle, gameDateReleased, ratingId) VALUES (%s, %s, %s, %s)"
-        # mycursor.executemany(sqlInsertgame, mgames) # this works for multiple values in tuples
-        # print("Inserts complete")
-        # connection.commit()
+        #   MySQL INSERT QUERY (Child Table)
+        #   sqlInsertgame = "INSERT INTO game (gameId, gameTitle, gameDateReleased, ratingId) VALUES (%s, %s, %s, %s)"
+        #   mycursor.executemany(sqlInsertgame, mgames) # this works for multiple values in tuples
+        #   print("Inserts complete")
+        #   connection.commit()
         
 
         choice = None
-        while choice != 5:
+        while choice != 5: # gives user options in the database
             print("1) View games")
             print("2) Add game")
             print("3) Update game rating")
@@ -175,7 +177,7 @@ while data != 3:
             choice = int(input("Select > "))
             print()
 
-            if choice == 1:
+            if choice == 1: # Display's the game's information
                 mycursor.execute("SELECT gameId, gameTitle, ratingName FROM game AS g JOIN rating AS r ON g.ratingId = r.ratingId")
 
                 print("{:>10}  {:>10}    {:>45}".format("GameId","Title", "Rating"))
@@ -185,21 +187,22 @@ while data != 3:
                     print("{:>10}  {:<10}   {:>45}".format(record[0],record[1],record[2]))
                 print("\n")
 
-            elif choice == 2:
+            elif choice == 2: # Adds a game to the database
                 print("Enter a game title")
                 title = input("Title: ")
                 print("Enter the rating")
                 rating = get_sqlrating(mycursor)
                 print("\n")
                 id = get_sqlid(mycursor)
-                date = time.strftime('%Y-%m-%d')
+                print("Date must be in YYYY-MM-DD format")
+                date = input("Date: ")
                 values = (id,title,date,rating)
                 mycursor.executemany("INSERT INTO game (gameId, gameTitle, gameDateReleased, ratingId) VALUES (%s,%s,%s,%s)", (values,))
                 connection.commit()
                 print("Game added to database.")
                 print("\n")
 
-            elif choice == 3:
+            elif choice == 3: # Updates the rating of a game
                 title = [input("Title: ")]
                 print("Change rating to one of the following options")
                 rating = get_sqlrating(mycursor)
@@ -214,7 +217,7 @@ while data != 3:
                     print("Game rating updated to 'E'.")
                     print("\n")
 
-            elif choice == 4:
+            elif choice == 4: # Deletes a game
                 title = get_title(mycursor)
                 values = (title,)
                 mycursor.execute("DELETE FROM game WHERE gameTitle = %s",values)
