@@ -180,11 +180,11 @@ while data != 3:
             if choice == 1: # Display's the game's information
                 mycursor.execute("SELECT gameId, gameTitle, ratingName FROM game AS g JOIN rating AS r ON g.ratingId = r.ratingId")
 
-                print("{:>10}  {:>10}    {:>45}".format("GameId","Title", "Rating"))
+                print("{:>10}  {:>45}    {:>10}".format("GameId","Title", "Rating"))
 
                 for record in mycursor.fetchall():
 
-                    print("{:>10}  {:<10}   {:>45}".format(record[0],record[1],record[2]))
+                    print("{:>10}  {:>45}   {:>10}".format(record[0],record[1],record[2]))
                 print("\n")
 
             elif choice == 2: # Adds a game to the database
