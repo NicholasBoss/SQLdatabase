@@ -1,4 +1,4 @@
-import time
+from datetime import datetime
 import sqlite3
 import mysql.connector
 
@@ -91,16 +91,23 @@ while data != 3:
             if choice == 1:
                 cursor.execute("SELECT gameTitle, ratingName FROM game AS g JOIN rating AS r ON g.ratingId = r.ratingId")
 
-                print("{:>10}                  {:>10}".format("Title", "Rating"))
+                print("{:<45}          {:>10}".format("Title", "Rating"))
 
                 for record in cursor.fetchall():
-                    print("{:>10}     {:>10}".format(record[0],record[1]))
+                    print("{:<45}     {:>10}".format(record[0],record[1]))
                 print("\n")
             elif choice == 2:
                 print("Enter a game title")
                 title = input("Title: ")
                 print("Date must be in YYYY-MM-DD format")
-                date = input("Date: ")
+                day = input("Day(DD): ")
+                if day == "today":
+                    date = datetime.today().strftime('%Y-%m-%d')
+                else:
+                    month = input("Month(MM): ")
+                    year = input("Year(YYYY): ")
+                    date = (f"{year}-{month}-{day}")
+                print("Enter the rating")
                 rating = (get_rating(cursor))
                 values = (title, date, rating)
                 cursor.execute("INSERT INTO game (gameTitle, gameDateReleased, ratingId) VALUES (?,?,?)", values)
@@ -194,8 +201,14 @@ while data != 3:
                 rating = get_sqlrating(mycursor)
                 print("\n")
                 id = get_sqlid(mycursor)
-                print("Date must be in YYYY-MM-DD format")
-                date = input("Date: ")
+                print("Date must be in YYYY-MM-DD format (Type 'today' for today's date)")
+                day = input("Day(DD): ")
+                if day == "today":
+                    date = datetime.today().strftime('%Y-%m-%d')
+                else:
+                    month = input("Month(MM): ")
+                    year = input("Year(YYYY): ")
+                    date = (f"{year}-{month}-{day}")
                 values = (id,title,date,rating)
                 mycursor.executemany("INSERT INTO game (gameId, gameTitle, gameDateReleased, ratingId) VALUES (%s,%s,%s,%s)", (values,))
                 connection.commit()
