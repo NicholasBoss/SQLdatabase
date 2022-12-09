@@ -1,6 +1,6 @@
 from datetime import datetime
 import sqlite3
-import mysql.connector
+import mysql.connector # the mysql connector was installed using pip install mysql-connector-python
 
 # All functions to use for the program
 def get_rating(cursor):
@@ -68,14 +68,15 @@ while data != 3:
 
         # Initial inserts for testing. 
         #   MySQL INSERT QUERY (Parent table)
-        #   cursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (1, 'M')") # Use this for ENUM values
-        #   cursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (2,'E')") # Use this for ENUM values
+        cursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (1, 'M')") # Use this for ENUM values
+        cursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (2,'E')") # Use this for ENUM values
+        cursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (3,'T')") # Use this for ENUM values
 
         #   MySQL INSERT QUERY (Child Table)
-        #   sqlInsertgame = "INSERT INTO game (gameTitle, gameDateReleased, ratingId) VALUES (?, ?, ?)"
-        #   cursor.executemany(sqlInsertgame, mgames) # this works for multiple values in tuples
-        #   print("Inserts complete")
-        #   db.commit()
+        sqlInsertgame = "INSERT INTO game (gameTitle, gameDateReleased, ratingId) VALUES (?, ?, ?)"
+        cursor.executemany(sqlInsertgame, mgames) # this works for multiple values in tuples
+        print("Inserts complete")
+        db.commit()
 
        
         choice = None
@@ -163,15 +164,16 @@ while data != 3:
                 (3,"Assassin's Creed Black Flag", '2013-10-19',1)]
 
         # Initial inserts for testing. 
-        #   MySQL INSERT QUERY (Parent table)
-        #   mycursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (1, 'M')") # Use this for ENUM values
-        #   mycursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (2,'E')") # Use this for ENUM values
+        #   MySQL INSERT QUERY (Parent tabl e)
+        # mycursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (1, 'M')") # Use this for ENUM values
+        # mycursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (2,'E')") # Use this for ENUM values
+        # mycursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (3,'T')") # Use this for ENUM values
 
         #   MySQL INSERT QUERY (Child Table)
-        #   sqlInsertgame = "INSERT INTO game (gameId, gameTitle, gameDateReleased, ratingId) VALUES (%s, %s, %s, %s)"
-        #   mycursor.executemany(sqlInsertgame, mgames) # this works for multiple values in tuples
-        #   print("Inserts complete")
-        #   connection.commit()
+        # sqlInsertgame = "INSERT INTO game (gameId, gameTitle, gameDateReleased, ratingId) VALUES (%s, %s, %s, %s)"
+        # mycursor.executemany(sqlInsertgame, mgames) # this works for multiple values in tuples
+        # print("Inserts complete")
+        connection.commit()
         
 
         choice = None
@@ -185,7 +187,7 @@ while data != 3:
             print()
 
             if choice == 1: # Display's the game's information
-                mycursor.execute("SELECT gameId, gameTitle, ratingName FROM game AS g JOIN rating AS r ON g.ratingId = r.ratingId")
+                mycursor.execute("SELECT gameId, gameTitle, ratingName FROM game AS g JOIN rating AS r ON g.ratingId = r.ratingId ORDER BY gameId")
 
                 print("{:>10}  {:>45}    {:>10}".format("GameId","Title", "Rating"))
 
