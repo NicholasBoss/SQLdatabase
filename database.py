@@ -33,7 +33,7 @@ def get_sqlid(mycursor):
     print("These ids are already in use. Please choose one that doesn't exist yet:")
     print("{:>10}  {:<10}".format("Selector", "Id"))
     for index in range(len(ids)):
-        print(f"{index+1}. {ids[index][0]}")
+        print(f"  {index+1}.        {ids[index][0]}")
     sel = int(input("Select > "))
     return sel
 
@@ -68,7 +68,7 @@ while data != 3:
 
         # Initial inserts for testing. 
         #   MySQL INSERT QUERY (Parent table)
-        cursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (1, 'M')") # Use this for ENUM values
+        cursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (1,'M')") # Use this for ENUM values
         cursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (2,'E')") # Use this for ENUM values
         cursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (3,'T')") # Use this for ENUM values
 
@@ -164,7 +164,7 @@ while data != 3:
                 (3,"Assassin's Creed Black Flag", '2013-10-19',1)]
 
         # Initial inserts for testing. 
-        #   MySQL INSERT QUERY (Parent tabl e)
+        #   MySQL INSERT QUERY (Parent table)
         # mycursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (1, 'M')") # Use this for ENUM values
         # mycursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (2,'E')") # Use this for ENUM values
         # mycursor.execute("INSERT INTO rating (ratingId, ratingName) VALUES (3,'T')") # Use this for ENUM values
